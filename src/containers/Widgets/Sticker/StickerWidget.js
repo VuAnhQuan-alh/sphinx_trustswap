@@ -1,7 +1,7 @@
 import React from 'react';
 import { NewStickerWidgetWrapper } from './StickerWidget.styles';
 
-export default function({ fontColor, bgColor, width, icon, number, text, fontSize = 16, lineWidth = 130 }) {
+export default function({ fontColor, bgColor, width, icon, number, text, fontSize = 16, lineWidth = 130, index }) {
   // const textColor = {
   //   color: fontColor,
   //   fontSize: '0.75rem',
@@ -40,7 +40,7 @@ export default function({ fontColor, bgColor, width, icon, number, text, fontSiz
           {text}
         </span>
         <h3 className="isoStatNumber" style={numberColor}>
-          {number}
+          {number !== undefined ? (index === 0 ? `$ ${number}`: number) : 0}
         </h3>
       </div>
 

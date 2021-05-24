@@ -68,6 +68,7 @@ const columns = [
   },
 ];
 const smallColumns = [columns[1], columns[2], columns[3], columns[4]];
+const newSmallColumns = [columns[1]];
 const sortColumns = [
   { ...columns[1], sorter: true },
   { ...columns[2], sorter: true },
@@ -123,4 +124,13 @@ const tableinfos = [
     columns: clone(columns),
   },
 ];
-export { columns, tableinfos };
+
+const newTableInfo = [
+  {
+    title: 'Staking Contact Info',
+    value: 'simple',
+    columns: clone(newSmallColumns),
+  }
+];
+
+export { columns, tableinfos, newTableInfo };

@@ -3,7 +3,7 @@ import Tabs, { TabPane } from '@iso/components/uielements/tabs';
 import LayoutContentWrapper from '@iso/components/utility/layoutWrapper';
 import TableDemoStyle from './Demo.styles';
 import fakeData from '../data';
-import { tableinfos } from './configs';
+import { newTableInfo, tableinfos } from './configs';
 import * as TableViews from './TableViews/TableViews';
 
 const dataList = new fakeData(10);
@@ -32,11 +32,24 @@ export default function AntTable() {
     }
     return <Component tableInfo={tableInfo} dataList={dataList} />;
   }
+  // return (
+  //   <LayoutContentWrapper>
+  //     <TableDemoStyle className="isoLayoutContent">
+  //       <Tabs className="isoTableDisplayTab">
+  //         {tableinfos.map(tableInfo => (
+  //           <TabPane tab={tableInfo.title} key={tableInfo.value}>
+  //             {renderTable(tableInfo)}
+  //           </TabPane>
+  //         ))}
+  //       </Tabs>
+  //     </TableDemoStyle>
+  //   </LayoutContentWrapper>
+  // );
   return (
     <LayoutContentWrapper>
       <TableDemoStyle className="isoLayoutContent">
         <Tabs className="isoTableDisplayTab">
-          {tableinfos.map(tableInfo => (
+          {newTableInfo.map(tableInfo => (
             <TabPane tab={tableInfo.title} key={tableInfo.value}>
               {renderTable(tableInfo)}
             </TabPane>

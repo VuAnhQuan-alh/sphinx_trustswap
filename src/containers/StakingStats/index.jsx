@@ -1,25 +1,16 @@
-import clone from 'clone';
-import React, { useEffect } from 'react';
+// import clone from 'clone';
+import React from 'react';
 import { Row, Col } from 'antd';
 import LayoutWrapper from '@iso/components/utility/layoutWrapper';
 import basicStyle from '@iso/assets/styles/constants';
-import { dataList } from '../Tables/AntTables/AntTables';
 import IsoWidgetsWrapper from '../Widgets/WidgetsWrapper';
-// import IsoWidgetBox from '../Widgets/WidgetBox';
-// import CardWidget from '../Widgets/Card/CardWidget';
-// import ProgressWidget from '../Widgets/Progress/ProgressWidget';
 import StickerWidget from '../Widgets/Sticker/StickerWidget';
-// import * as rechartConfigs from '../Charts/Recharts/config';
-// import { isServer } from '@iso/lib/helpers/isServer';
-// import StackedAreaChart from '../Charts/Recharts/Charts/StackedAreaChart';
-// import IntlMessages from '@iso/components/utility/intlMessages';
 import LineChart from '../Charts/ReactChart2/Components/Line/Line';
-import axios from 'axios';
 import { useAsync } from '../../hooks/useAsync';
 import { getMarketBNB } from '../../services/apiCoingeko';
+import { StakingComponent } from './StakingComponnent';
+import { FormatNumber } from '../../hooks/FormatNumber';
 
-const tableDataList = clone(dataList);
-tableDataList.size = 5;
 const styles = {
   widgetPageStyle: {
     display: 'flex',
@@ -29,33 +20,65 @@ const styles = {
   },
 };
 
-
 const STICKER_WIDGET = [
   {
-    text: 'current price',
+    text: 'price',
     icon: 'ion-cash',
     fontColor: '#ffffff',
     bgColor: '#7266BA',
   },
   {
-    text: 'total supply',
+    text: 'NUMBER OF STAKERS',
     icon: 'ion-cash',
     fontColor: '#ffffff',
     bgColor: '#42A5F6',
   },
   {
-    text: 'Low 24h',
+    text: 'STAKINGPOOL FILLED',
     icon: 'ion-cash',
     fontColor: '#ffffff',
     bgColor: '#42A5F6',
   },
   {
-    text: 'price change 24h',
+    text: 'STAKED SWAP',
     icon: 'ion-cash',
     fontColor: '#ffffff',
     bgColor: '#7ED320',
   }
 ];
+
+const NEW_ROW = [
+  {
+    key: 'max_cap',
+    text: 'Max Cap',
+    data: '0'
+  },
+  {
+    key: 'total_rewards',
+    text: 'Total Rewards',
+    data: '0'
+  },
+  {
+    key: 'address',
+    text: 'Address',
+    data: '0'
+  },
+  {
+    key: 'total_supply',
+    text: 'Total Supply',
+    data: '0'
+  },
+  {
+    key: 'total_burned',
+    text: 'Total Burned',
+    data: '0'
+  },
+  {
+    key: 'un_staking',
+    text: 'UnStaking Period',
+    data: '0'
+  },
+]
 
 // const CARD_WIDGET = [
 //   {
@@ -111,7 +134,28 @@ const STICKER_WIDGET = [
 
 function StakingStats() {
   const { rowStyle, colStyle, titleStyle } = basicStyle;
-  const {execute, data , loading} = useAsync(getMarketBNB,[0,0,0,0], true)
+  const { data: { array, max_cap, total_supply } , loading } = useAsync(getMarketBNB, [0, 0, 0, 0], true);
+
+  const newMaxCap = FormatNumber(max_cap);
+  const price = [
+    {
+      key: 'max_cap',
+      value: newMaxCap
+    },
+    {
+      key: 'total_supply',
+      value: Math.ceil(total_supply)
+    }
+  ];
+
+  NEW_ROW.forEach(item => {
+    price.forEach(obj => {
+      if (obj.key === item.key) {
+        item.data = `${obj.value}`;
+      }
+    })
+  })
+
 
   return (
     <LayoutWrapper>
@@ -125,7 +169,8 @@ function StakingStats() {
             <Col lg={6} md={12} sm={12} xs={24} style={colStyle} key={idx}>
               <IsoWidgetsWrapper>
                 <StickerWidget
-                  number={data[idx]}
+                  index={idx}
+                  number={array?.[idx]}
                   text={widget.text}
                   icon={widget.icon}
                   fontColor={widget.fontColor}
@@ -137,49 +182,13 @@ function StakingStats() {
         </Row>
 
         <Row style={rowStyle} gutter={0} justify="start">
-          <LineChart />
-        </Row> 
-
-        {/* <Row style={rowStyle} gutter={0} justify="start">
           <Col lg={6} md={12} sm={12} xs={24} style={colStyle}>
-            {CARD_WIDGET.map((widget, idx) => (
-              <IsoWidgetsWrapper key={idx} gutterBottom={20}>
-                <CardWidget
-                  icon={widget.icon}
-                  iconcolor={widget.iconcolor}
-                  number={<IntlMessages id={widget.number} />}
-                  text={<IntlMessages id={widget.text} />}
-                />
-              </IsoWidgetsWrapper>
-            ))}
+            <StakingComponent data={NEW_ROW} />
           </Col>
-
-          <Col lg={6} md={12} sm={12} xs={24} style={colStyle}>
-            {PROGRESS_WIDGET.map((widget, idx) => (
-              <IsoWidgetsWrapper key={idx} gutterBottom={20}>
-                <ProgressWidget
-                  label={<IntlMessages id={widget.label} />}
-                  details={<IntlMessages id={widget.details} />}
-                  icon={widget.icon}
-                  iconcolor={widget.iconcolor}
-                  percent={widget.percent}
-                  barHeight={widget.barHeight}
-                  status={widget.status}
-                />
-              </IsoWidgetsWrapper>
-            ))}
+          <Col lg={18} md={36} sm={36} xs={72} style={colStyle}>
+            <LineChart />
           </Col>
-
-          <Col lg={12} md={24} sm={24} xs={24} style={colStyle}>
-            <IsoWidgetsWrapper>
-              <IsoWidgetBox height={448} style={{ overflow: 'hidden' }}>
-                <StackedAreaChart {...stackConfig} />
-              </IsoWidgetBox>
-            </IsoWidgetsWrapper>
-          </Col>
-        </Row> */}
-
-
+        </Row>
       </div>
     </LayoutWrapper>
   )

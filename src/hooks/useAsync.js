@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 // Hook
 export const useAsync = (asyncFunction,initialValue = null, immediate) => {
@@ -12,7 +12,7 @@ export const useAsync = (asyncFunction,initialValue = null, immediate) => {
     setLoading(true)
     asyncFunction().then(_data => {
       setLoading(false);
-      setData(_data)
+      setData(_data);
     })
   }
 

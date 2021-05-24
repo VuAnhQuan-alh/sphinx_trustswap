@@ -3,7 +3,8 @@ import { palette } from 'styled-theme';
 
 const TableDemoStyle = styled.div`
   .ant-tabs-content {
-    margin-top: 40px;
+    ${'' /* margin-top: 40px; */}
+    margin-top: 10px;
   }
 
   .ant-tabs-nav {
