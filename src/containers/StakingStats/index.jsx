@@ -1,5 +1,5 @@
 import clone from 'clone';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Row, Col } from 'antd';
 import LayoutWrapper from '@iso/components/utility/layoutWrapper';
 import basicStyle from '@iso/assets/styles/constants';
@@ -14,6 +14,9 @@ import StickerWidget from '../Widgets/Sticker/StickerWidget';
 // import StackedAreaChart from '../Charts/Recharts/Charts/StackedAreaChart';
 // import IntlMessages from '@iso/components/utility/intlMessages';
 import LineChart from '../Charts/ReactChart2/Components/Line/Line';
+import axios from 'axios';
+import { useAsync } from '../../hooks/useAsync';
+import { getMarketBNB } from '../../services/apiCoingeko';
 
 const tableDataList = clone(dataList);
 tableDataList.size = 5;
@@ -26,32 +29,29 @@ const styles = {
   },
 };
 
+
 const STICKER_WIDGET = [
   {
-    number: '$1.87',
-    text: 'SWAP PRICE',
+    text: 'current price',
     icon: 'ion-cash',
     fontColor: '#ffffff',
     bgColor: '#7266BA',
   },
   {
-    number: '12,108',
-    text: 'NUMBER OF STAKERS',
-    icon: 'ion-person-stalker',
+    text: 'total supply',
+    icon: 'ion-cash',
     fontColor: '#ffffff',
     bgColor: '#42A5F6',
   },
   {
-    number: '88%',
-    text: 'NUMBER OF STAKERS',
-    icon: 'ion-person-stalker',
+    text: 'Low 24h',
+    icon: 'ion-cash',
     fontColor: '#ffffff',
     bgColor: '#42A5F6',
   },
   {
-    number: '44,093,853',
-    text: 'STAKED SWAP',
-    icon: 'ion-flash',
+    text: 'price change 24h',
+    icon: 'ion-cash',
     fontColor: '#ffffff',
     bgColor: '#7ED320',
   }
@@ -111,28 +111,25 @@ const STICKER_WIDGET = [
 
 function StakingStats() {
   const { rowStyle, colStyle, titleStyle } = basicStyle;
+  const {execute, data , loading} = useAsync(getMarketBNB,[0,0,0,0], true)
 
-  // const stackConfig = {
-  //   ...rechartConfigs.StackedAreaChart,
-  //   width: !isServer && window.innerWidth < 450 ? 300 : 500,
-  // };
   return (
     <LayoutWrapper>
       <div style={styles.widgetPageStyle}>
 
-      <h2 style={titleStyle}>Overall Staking Statistics</h2>
+        <h2 style={titleStyle}>Overall Staking Statistics {loading && "LOADING"}</h2>
 
+                {/* Sticker Widget */}
         <Row style={rowStyle} gutter={0} justify="start">
           {STICKER_WIDGET.map((widget, idx) => (
             <Col lg={6} md={12} sm={12} xs={24} style={colStyle} key={idx}>
               <IsoWidgetsWrapper>
-                {/* Sticker Widget */}
                 <StickerWidget
-                  number={widget.number}
+                  number={data[idx]}
                   text={widget.text}
                   icon={widget.icon}
                   fontColor={widget.fontColor}
-                  bgColor={widget.bgColor}
+                  bgColor={'#15161b94'}
                 />
               </IsoWidgetsWrapper>
             </Col>
@@ -141,7 +138,7 @@ function StakingStats() {
 
         <Row style={rowStyle} gutter={0} justify="start">
           <LineChart />
-        </Row>
+        </Row> 
 
         {/* <Row style={rowStyle} gutter={0} justify="start">
           <Col lg={6} md={12} sm={12} xs={24} style={colStyle}>

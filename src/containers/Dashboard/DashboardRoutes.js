@@ -5,7 +5,8 @@ import Loader from '@iso/components/utility/loader';
 const routes = [
   {
     path: '',
-    component: lazy(() => import('@iso/containers/Widgets/Widgets')),
+    component: lazy(() => import('@iso/containers/StakingStats')),
+    // component: lazy(() => import('@iso/containers/Widgets/Widgets')),
     exact: true,
   },
   {

@@ -49,7 +49,7 @@ const NewStickerWidgetWrapper = styled.div `
   display: flex;
   align-items: center;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.24);
   ${borderRadius('5px')};
 
   .isoContent {
@@ -77,6 +77,7 @@ const NewStickerWidgetWrapper = styled.div `
       color: #e6e5e8;
       margin-bottom: 10px;
       line-height: 1.2;
+      text-transform: uppercase;
     }
     .isoProgressWidgetBody {
     p {
@@ -93,14 +94,14 @@ const NewStickerWidgetWrapper = styled.div `
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     flex-shrink: 0;
     background-color: #4686FF;
 
     i {
-      font-size: 30px;
+      font-size: 20px;
     }
   }
 `;
